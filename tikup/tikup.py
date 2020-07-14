@@ -41,7 +41,7 @@ def downloadTikTok(username, tiktok, cwd):
             if (os.path.exists(base + '.mp4')):
                 os.remove(base + '.mp4')
             os.rename(i, base + '.mp4')
-    json = open("tiktok_info.json", "w")
+    json = open("tiktok_info.json", "w", encoding="utf-8")
     json.write(str(tiktok))
     json.close()
     os.chdir(cwd)
@@ -55,7 +55,7 @@ def uploadTikTok(username, tiktok, deletionStatus, file):
     regexD = re.compile('[0-9]{9}')
     if (os.path.isdir(tiktok) and (regex.match(str(tiktok)) or (regexA.match(str(tiktok))) or (regexB.match(str(tiktok))) or (regexC.match(str(tiktok))) or (regexD.match(str(tiktok))))):
         item = get_item('tiktok-' + tiktok)
-        item.upload('./' + tiktok + '/', verbose=True, checksum=True, delete=deletionStatus, metadata=dict(collection='opensource_media', subject='tiktok', creator=username, title='TikTok Video by ' + username, originalurl='https://www.tiktok.com/@' + username + '/video/' + tiktok, scanner='TikUp 2020.07.14'), retries=9001, retries_sleep=60)
+        item.upload('./' + tiktok + '/', verbose=True, checksum=True, delete=deletionStatus, metadata=dict(collection='opensource_media', subject='tiktok', creator=username, title='TikTok Video by ' + username, originalurl='https://www.tiktok.com/@' + username + '/video/' + tiktok, scanner='TikUp 2020.07.14.1'), retries=9001, retries_sleep=60)
         if (deletionStatus == True):
             os.rmdir(tiktok)
         print ()
