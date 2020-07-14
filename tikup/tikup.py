@@ -8,6 +8,13 @@ import re
 import sys
 
 def downloadTikTok(username, tiktok, cwd):
+    try:
+        tiktokID = tiktok['id']
+    except:
+        try:
+            tiktokID = tiktok['itemInfos']['id']
+        except:
+            tiktokID = tiktok['itemInfo']['itemStruct']['id']
     ydl_opts = {
         'writeinfojson': True,
         'writedescription': True,
@@ -19,19 +26,14 @@ def downloadTikTok(username, tiktok, cwd):
         'quiet': True,
         'no_warnings': True,
         'restrictfilenames': True,
-        }
-    try:
-        tiktokID = tiktok['id']
-    except:
-        try:
-            tiktokID = tiktok['itemInfos']['id']
-        except:
-            tiktokID = tiktok['itemInfo']['itemStruct']['id']
+        'outtmpl': tiktokID + '.mp4',
+    }
     if (os.path.exists(tiktokID) == False):
         os.mkdir(tiktokID)
     os.chdir(tiktokID)
     with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-        ydl.download(['https://www.tiktok.com/@' + username + '/video/' + tiktokID])
+        if (ydl.download(['https://www.tiktok.com/@' + username + '/video/' + tiktokID]) == 1):
+            ydl.download([tiktok['video']['downloadAddr']])
     x = os.listdir()
     for i in x:
         if i.endswith('.unknown_video'):
@@ -39,6 +41,9 @@ def downloadTikTok(username, tiktok, cwd):
             if (os.path.exists(base + '.mp4')):
                 os.remove(base + '.mp4')
             os.rename(i, base + '.mp4')
+    json = open("tiktok_info.json", "w")
+    json.write(str(tiktok))
+    json.close()
     os.chdir(cwd)
     print (tiktokID + " has been downloaded.")
 
@@ -50,7 +55,7 @@ def uploadTikTok(username, tiktok, deletionStatus, file):
     regexD = re.compile('[0-9]{9}')
     if (os.path.isdir(tiktok) and (regex.match(str(tiktok)) or (regexA.match(str(tiktok))) or (regexB.match(str(tiktok))) or (regexC.match(str(tiktok))) or (regexD.match(str(tiktok))))):
         item = get_item('tiktok-' + tiktok)
-        item.upload('./' + tiktok + '/', verbose=True, checksum=True, delete=deletionStatus, metadata=dict(collection='opensource_media', subject='tiktok', creator=username, title='TikTok Video by ' + username, originalurl='https://www.tiktok.com/@' + username + '/video/' + tiktok, scanner='TikUp 2020.07.01'), retries=9001, retries_sleep=60)
+        item.upload('./' + tiktok + '/', verbose=True, checksum=True, delete=deletionStatus, metadata=dict(collection='opensource_media', subject='tiktok', creator=username, title='TikTok Video by ' + username, originalurl='https://www.tiktok.com/@' + username + '/video/' + tiktok, scanner='TikUp 2020.07.14'), retries=9001, retries_sleep=60)
         if (deletionStatus == True):
             os.rmdir(tiktok)
         print ()
@@ -82,6 +87,10 @@ def downloadUser(username, limit, file):
             else:
                 downloadTikTok(username, tiktok, cwd)
                 ids.append(tiktok['id'])
+        else:
+            downloadTikTok(username, tiktok, cwd)
+            ids.append(tiktok['id'])
+        
     return ids
 
 def downloadHashtag(hashtag, limit, file):
@@ -159,11 +168,12 @@ def main():
             splitName = name.split(':')
             uploadTikTok(splitName[0], splitName[1], delete, file)
     elif (args.id == True):
-        lines = file.readlines()
-        for x in range(0, len(lines) - 1):
-            lines[x] = lines[x].replace('\n', '')
-        if doesIdExist(lines, username):
-            print (username + " has already been archived.") # Clean up, make into a function
+        if (args.use_download_archive == True):
+            lines = file.readlines()
+            for x in range(0, len(lines) - 1):
+                lines[x] = lines[x].replace('\n', '')
+            if doesIdExist(lines, username):
+                print (username + " has already been archived.") # Clean up, make into a function
         else:
             name = getUsername(username)
             cwd = os.getcwd()
