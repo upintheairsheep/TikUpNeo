@@ -55,7 +55,7 @@ def uploadTikTok(username, tiktok, deletionStatus, file):
     regexD = re.compile('[0-9]{9}')
     if (os.path.isdir(tiktok) and (regex.match(str(tiktok)) or (regexA.match(str(tiktok))) or (regexB.match(str(tiktok))) or (regexC.match(str(tiktok))) or (regexD.match(str(tiktok))))):
         item = get_item('tiktok-' + tiktok)
-        item.upload('./' + tiktok + '/', verbose=True, checksum=True, delete=deletionStatus, metadata=dict(collection='opensource_media', subject='tiktok', creator=username, title='TikTok Video by ' + username, originalurl='https://www.tiktok.com/@' + username + '/video/' + tiktok, scanner='TikUp 2020.07.14.1'), retries=9001, retries_sleep=60)
+        item.upload('./' + tiktok + '/', verbose=True, checksum=True, delete=deletionStatus, metadata=dict(collection='opensource_media', subject='tiktok', creator=username, title='TikTok Video by ' + username, originalurl='https://www.tiktok.com/@' + username + '/video/' + tiktok, scanner='TikUp 2020.07.14.2'), retries=9001, retries_sleep=60)
         if (deletionStatus == True):
             os.rmdir(tiktok)
         print ()
@@ -94,9 +94,12 @@ def downloadUser(username, limit, file):
     return ids
 
 def downloadHashtag(hashtag, limit, file):
-    lines = file.readlines()
-    for x in range(0, len(lines) - 1):
-        lines[x] = lines[x].replace('\n', '')
+    try:
+        lines = file.readlines()
+        for x in range(0, len(lines) - 1):
+            lines[x] = lines[x].replace('\n', '')
+    except:
+        lines = ''
     api = TikTokApi()
     if limit != None:
         count = int(limit)
@@ -106,13 +109,36 @@ def downloadHashtag(hashtag, limit, file):
     usernames = []
     cwd = os.getcwd()
     for tiktok in tiktoks:
-        if (file != None):
-            if (doesIdExist(lines, tiktok['itemInfos']['id'])):
-                print (tiktok['itemInfos']['id'] + " has already been archived.")
-            else:
-                username = tiktok['authorInfos']['uniqueId']
-                downloadTikTok(username, tiktok, cwd)
-                usernames.append(username + ':' + tiktok['itemInfos']['id'])
+        if (doesIdExist(lines, tiktok['itemInfos']['id'])):
+            print (tiktok['itemInfos']['id'] + " has already been archived.")
+        else:
+            username = tiktok['authorInfos']['uniqueId']
+            downloadTikTok(username, tiktok, cwd)
+            usernames.append(username + ':' + tiktok['itemInfos']['id'])
+    return usernames
+
+def downloadLiked(name, limit, file):
+    try:
+        lines = file.readlines()
+        for x in range(0, len(lines) - 1):
+            lines[x] = lines[x].replace('\n', '')
+    except:
+        lines = ''
+    api = TikTokApi()
+    if limit != None:
+        count = int(limit)
+    else:
+        count = 9999
+    tiktoks = api.userLikedbyUsername(name, count=count)
+    usernames = []
+    cwd = os.getcwd()
+    for tiktok in tiktoks:
+        if (doesIdExist(lines, tiktok['id'])):
+            print (tiktok['id'] + " has already been archived.")
+        else:
+            username = tiktok['author']['uniqueId']
+            downloadTikTok(username, tiktok, cwd)
+            usernames.append(username + ':' + tiktok['id'])
     return usernames
 
 def doesIdExist(lines, tiktok):
@@ -147,6 +173,7 @@ def main():
     parser.add_argument('--limit', help="set limit on amount of TikToks to download")
     parser.add_argument('--use-download-archive', action='store_true', help='record the video url to the download archive. This will download only videos not listed in the archive file. Record the IDs of all downloaded videos in it.')
     parser.add_argument('--id', action='store_true', help='download this video ID')
+    parser.add_argument('--liked', action='store_true', help='download the user\'s liked posts')
     args = parser.parse_args()
     username = args.user
     delete = args.no_delete
@@ -181,6 +208,12 @@ def main():
             downloadTikTok(name, tiktok, cwd)
             print ('')
             uploadTikTok(name, username, delete, file)
+    elif (args.liked == True):
+        names = downloadLiked(username, limit, file)
+        print ('')
+        for name in names:
+            splitName = name.split(':')
+            uploadTikTok(splitName[0], splitName[1], delete, file)
     else:
         tiktoks = downloadUser(username, limit, file)
         print ('')
