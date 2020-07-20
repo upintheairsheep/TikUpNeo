@@ -64,7 +64,7 @@ def uploadTikTok(username, tiktok, deletionStatus, file, sort):
         os.chdir('tiktok-' + username)
     if (os.path.isdir(tiktok) and (regex.match(str(tiktok)) or (regexA.match(str(tiktok))) or (regexB.match(str(tiktok))) or (regexC.match(str(tiktok))) or (regexD.match(str(tiktok))))):
         item = get_item('tiktok-' + tiktok)
-        item.upload('./' + tiktok + '/', verbose=True, checksum=True, delete=deletionStatus, metadata=dict(collection='opensource_media', subject='tiktok', creator=username, title='TikTok Video by ' + username, originalurl='https://www.tiktok.com/@' + username + '/video/' + tiktok, scanner='TikUp 2020.07.19'), retries=9001, retries_sleep=60)
+        item.upload('./' + tiktok + '/', verbose=True, checksum=True, delete=deletionStatus, metadata=dict(collection='opensource_media', subject='tiktok', creator=username, title='TikTok Video by ' + username, originalurl='https://www.tiktok.com/@' + username + '/video/' + tiktok, scanner='TikUp 2020.07.19.2'), retries=9001, retries_sleep=60)
         if (deletionStatus == True):
             os.rmdir(tiktok)
         print ()
@@ -175,7 +175,7 @@ def main():
     if (os.path.exists('./.tikup') == False):
         os.mkdir('./.tikup')
     os.chdir('./.tikup')
-    parser = argparse.ArgumentParser(description='An auto downloader and uploader for Instagram profiles.')
+    parser = argparse.ArgumentParser(description='An auto downloader and uploader for TikTok videos.')
     parser.add_argument('user')
     parser.add_argument('--no-delete', action='store_false', help="don't delete files when done")
     parser.add_argument('--hashtag', action='store_true', help="download hashtag instead of username")

@@ -15,7 +15,7 @@ usage: tikup.py [-h] [--no-delete] [--hashtag] [--limit LIMIT]
                 [--use-download-archive] [--id] [--liked] [--sort]
                 user
 
-An auto downloader and uploader for Instagram profiles.
+An auto downloader and uploader for TikTok videos.
 
 positional arguments:
   user
