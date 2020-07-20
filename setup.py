@@ -3,15 +3,15 @@ from os import path
 
 here = path.abspath(path.dirname(__file__))
 
-with open('README.rst', 'r') as f:
+with open('README.md', 'r') as f:
     long_description = f.read()
 
 setup(
     name='tikup',
-    version='2020.07.14.2',
+    version='2020.07.19',
     description='An auto downloader and uploader for TikTok videos.',
     long_description=long_description,
-    long_description_content_type='text/x-rst',
+    long_description_content_type='text/markdown',
     url='https://github.com/Coloradohusky/TikUp',
     author='Coloradohusky',
     packages=find_packages(),

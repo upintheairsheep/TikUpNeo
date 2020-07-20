@@ -7,7 +7,10 @@ import argparse
 import re
 import sys
 
-def downloadTikTok(username, tiktok, cwd):
+## this code is a mess but I'm too lazy to fix it lol
+## as long as it works, I don't care
+
+def downloadTikTok(username, tiktok, cwd, sort):
     try:
         tiktokID = tiktok['id']
     except:
@@ -28,6 +31,10 @@ def downloadTikTok(username, tiktok, cwd):
         'restrictfilenames': True,
         'outtmpl': tiktokID + '.mp4',
     }
+    if (sort == True):
+        if (os.path.exists('tiktok-' + username) == False):
+            os.mkdir('tiktok-' + username)
+        os.chdir('tiktok-' + username)
     if (os.path.exists(tiktokID) == False):
         os.mkdir(tiktokID)
     os.chdir(tiktokID)
@@ -47,15 +54,17 @@ def downloadTikTok(username, tiktok, cwd):
     os.chdir(cwd)
     print (tiktokID + " has been downloaded.")
 
-def uploadTikTok(username, tiktok, deletionStatus, file):
+def uploadTikTok(username, tiktok, deletionStatus, file, sort):
     regex = re.compile('[0-9]{17}')
     regexA = re.compile('[0-9]{18}')
     regexB = re.compile('[0-9]{19}')
     regexC = re.compile('[0-9]{8}')
     regexD = re.compile('[0-9]{9}')
+    if (sort == True):
+        os.chdir('tiktok-' + username)
     if (os.path.isdir(tiktok) and (regex.match(str(tiktok)) or (regexA.match(str(tiktok))) or (regexB.match(str(tiktok))) or (regexC.match(str(tiktok))) or (regexD.match(str(tiktok))))):
         item = get_item('tiktok-' + tiktok)
-        item.upload('./' + tiktok + '/', verbose=True, checksum=True, delete=deletionStatus, metadata=dict(collection='opensource_media', subject='tiktok', creator=username, title='TikTok Video by ' + username, originalurl='https://www.tiktok.com/@' + username + '/video/' + tiktok, scanner='TikUp 2020.07.14.2'), retries=9001, retries_sleep=60)
+        item.upload('./' + tiktok + '/', verbose=True, checksum=True, delete=deletionStatus, metadata=dict(collection='opensource_media', subject='tiktok', creator=username, title='TikTok Video by ' + username, originalurl='https://www.tiktok.com/@' + username + '/video/' + tiktok, scanner='TikUp 2020.07.19'), retries=9001, retries_sleep=60)
         if (deletionStatus == True):
             os.rmdir(tiktok)
         print ()
@@ -65,7 +74,7 @@ def uploadTikTok(username, tiktok, deletionStatus, file):
             file.write(str(tiktok))
             file.write('\n')
 
-def downloadUser(username, limit, file):
+def downloadUser(username, limit, file, sort):
     try:
         lines = file.readlines()
         for x in range(0, len(lines) - 1):
@@ -85,15 +94,15 @@ def downloadUser(username, limit, file):
             if (doesIdExist(lines, tiktok['id'])):
                 print (tiktok['id'] + " has already been archived.")
             else:
-                downloadTikTok(username, tiktok, cwd)
+                downloadTikTok(username, tiktok, cwd, sort)
                 ids.append(tiktok['id'])
         else:
-            downloadTikTok(username, tiktok, cwd)
+            downloadTikTok(username, tiktok, cwd, sort)
             ids.append(tiktok['id'])
         
     return ids
 
-def downloadHashtag(hashtag, limit, file):
+def downloadHashtag(hashtag, limit, file, sort):
     try:
         lines = file.readlines()
         for x in range(0, len(lines) - 1):
@@ -113,11 +122,11 @@ def downloadHashtag(hashtag, limit, file):
             print (tiktok['itemInfos']['id'] + " has already been archived.")
         else:
             username = tiktok['authorInfos']['uniqueId']
-            downloadTikTok(username, tiktok, cwd)
+            downloadTikTok(username, tiktok, cwd, sort)
             usernames.append(username + ':' + tiktok['itemInfos']['id'])
     return usernames
 
-def downloadLiked(name, limit, file):
+def downloadLiked(name, limit, file, sort):
     try:
         lines = file.readlines()
         for x in range(0, len(lines) - 1):
@@ -137,7 +146,7 @@ def downloadLiked(name, limit, file):
             print (tiktok['id'] + " has already been archived.")
         else:
             username = tiktok['author']['uniqueId']
-            downloadTikTok(username, tiktok, cwd)
+            downloadTikTok(username, tiktok, cwd, sort)
             usernames.append(username + ':' + tiktok['id'])
     return usernames
 
@@ -174,11 +183,13 @@ def main():
     parser.add_argument('--use-download-archive', action='store_true', help='record the video url to the download archive. This will download only videos not listed in the archive file. Record the IDs of all downloaded videos in it.')
     parser.add_argument('--id', action='store_true', help='download this video ID')
     parser.add_argument('--liked', action='store_true', help='download the user\'s liked posts')
+    parser.add_argument('--sort', action='store_true', help='sort into folders based on TikTok username')
     args = parser.parse_args()
     username = args.user
     delete = args.no_delete
     limit = args.limit
     archive = args.use_download_archive
+    sort = args.sort
     if (archive == True):
         try:
             file = open('archive.txt', 'r+')
@@ -188,37 +199,37 @@ def main():
             file = open('archive.txt', 'r+')
     else:
         file = None
-    if (args.hashtag == True):
-        names = downloadHashtag(username, limit, file)
+    if (args.hashtag == True): ## Download hashtag
+        names = downloadHashtag(username, limit, file, sort)
         print ('')
         for name in names:
             splitName = name.split(':')
-            uploadTikTok(splitName[0], splitName[1], delete, file)
-    elif (args.id == True):
+            uploadTikTok(splitName[0], splitName[1], delete, file, sort)
+    elif (args.id == True): ## Download ID
         if (args.use_download_archive == True):
             lines = file.readlines()
             for x in range(0, len(lines) - 1):
                 lines[x] = lines[x].replace('\n', '')
             if doesIdExist(lines, username):
-                print (username + " has already been archived.") # Clean up, make into a function
-        else:
-            name = getUsername(username)
-            cwd = os.getcwd()
-            tiktok = getTikTokObject(username)
-            downloadTikTok(name, tiktok, cwd)
-            print ('')
-            uploadTikTok(name, username, delete, file)
-    elif (args.liked == True):
-        names = downloadLiked(username, limit, file)
+                print (username + " has already been archived.")
+                sys.exit()
+        name = getUsername(username)
+        cwd = os.getcwd()
+        tiktok = getTikTokObject(username)
+        downloadTikTok(name, tiktok, cwd, sort)
+        print ('')
+        uploadTikTok(name, username, delete, file, sort)
+    elif (args.liked == True): ## Download liked
+        names = downloadLiked(username, limit, file, sort)
         print ('')
         for name in names:
             splitName = name.split(':')
-            uploadTikTok(splitName[0], splitName[1], delete, file)
-    else:
-        tiktoks = downloadUser(username, limit, file)
+            uploadTikTok(splitName[0], splitName[1], delete, file, sort)
+    else: ## Download username
+        tiktoks = downloadUser(username, limit, file, sort)
         print ('')
         for tiktok in tiktoks:
-            uploadTikTok(username, tiktok, delete, file)
+            uploadTikTok(username, tiktok, delete, file, sort)
     try:
         file.close()
     except:
