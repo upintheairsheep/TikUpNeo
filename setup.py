@@ -8,7 +8,7 @@ with open('README.md', 'r') as f:
 
 setup(
     name='tikup',
-    version='2020.07.19.2',
+    version='2020.09.21',
     description='An auto downloader and uploader for TikTok videos.',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -21,5 +21,5 @@ setup(
         ],
     },
     python_requires='>=3.5, <4',
-    install_requires=['internetarchive>=1.9.3', 'TikTokApi>=3.3.1', 'youtube-dl>=2020.06.16.1']
+    install_requires=['internetarchive>=1.9.4', 'TikTokApi>=3.5.2', 'youtube-dl>=2020.09.20']
 )
