@@ -77,7 +77,7 @@ def uploadTikTok(username, tiktok, deletionStatus, file, sort):
         os.chdir('tiktok-' + username)
     if (os.path.isdir(tiktok) and (regex.match(str(tiktok)) or (regexA.match(str(tiktok))) or (regexB.match(str(tiktok))) or (regexC.match(str(tiktok))) or (regexD.match(str(tiktok))))):
         item = get_item('tiktok-' + tiktok)
-        item.upload('./' + tiktok + '/', verbose=True, checksum=True, delete=deletionStatus, metadata=dict(collection='opensource_media', subject='tiktok', creator=username, title='TikTok Video by ' + username, originalurl='https://www.tiktok.com/@' + username + '/video/' + tiktok, scanner='TikUp 2020.07.19.2'), retries=9001, retries_sleep=60)
+        item.upload('./' + tiktok + '/', verbose=True, checksum=True, delete=deletionStatus, metadata=dict(collection='opensource_media', subject='tiktok', creator=username, title='TikTok Video by ' + username, originalurl='https://www.tiktok.com/@' + username + '/video/' + tiktok, scanner='TikUp 2020.09.22'), retries=9001, retries_sleep=60)
         if (deletionStatus == True):
             os.rmdir(tiktok)
         print ()
@@ -108,17 +108,27 @@ def downloadUser(username, limit, file, sort):
                 print (tiktok['id'] + " has already been archived.")
             else:
                 status = downloadTikTok(username, tiktok, cwd, sort)
+                i = 0
                 if (status == 'Failed!'):
                     while (status == 'Failed!'):
-                        print ('Trying again, again')
-                        status = downloadTikTok(username, tiktok, cwd, sort)
+                        if (i != 10):
+                            print ('Trying again, again')
+                            status = downloadTikTok(username, tiktok, cwd, sort)
+                            i += 1
+                        else:
+                            status = 'Skip'
                 ids.append(tiktok['id'])
         else:
             status = downloadTikTok(username, tiktok, cwd, sort)
+            i = 0
             if (status == 'Failed!'):
                 while (status == 'Failed!'):
-                    print ('Trying again, again')
-                    status = downloadTikTok(username, tiktok, cwd, sort)
+                    if (i != 10):
+                        print ('Trying again, again')
+                        status = downloadTikTok(username, tiktok, cwd, sort)
+                        i += 1
+                    else:
+                        status = 'Skip'
             ids.append(tiktok['id'])
         
     return ids
@@ -144,10 +154,15 @@ def downloadHashtag(hashtag, limit, file, sort):
         else:
             username = tiktok['authorInfos']['uniqueId']
             status = downloadTikTok(username, tiktok, cwd, sort)
+            i = 0
             if (status == 'Failed!'):
                 while (status == 'Failed!'):
-                    print ('Trying again, again')
-                    status = downloadTikTok(username, tiktok, cwd, sort)
+                    if (i != 10):
+                        print ('Trying again, again')
+                        status = downloadTikTok(username, tiktok, cwd, sort)
+                        i += 1
+                    else:
+                        status = 'Skip'
             usernames.append(username + ':' + tiktok['itemInfos']['id'])
     return usernames
 
@@ -164,7 +179,6 @@ def downloadLiked(name, limit, file, sort):
     else:
         count = 9999
     tiktoks = api.userLikedbyUsername(name, count=count)
-    print (type(tiktoks))
     usernames = []
     cwd = os.getcwd()
     for tiktok in tiktoks:
@@ -173,10 +187,15 @@ def downloadLiked(name, limit, file, sort):
         else:
             username = tiktok['author']['uniqueId']
             status = downloadTikTok(username, tiktok, cwd, sort)
+            i = 0
             if (status == 'Failed!'):
                 while (status == 'Failed!'):
-                    print ('Trying again, again')
-                    status = downloadTikTok(username, tiktok, cwd, sort)
+                    if (i != 10):
+                        print ('Trying again, again')
+                        status = downloadTikTok(username, tiktok, cwd, sort)
+                        i += 1
+                    else:
+                        status = 'Skip'
             usernames.append(username + ':' + tiktok['id'])
     return usernames
 
@@ -247,10 +266,15 @@ def main():
         cwd = os.getcwd()
         tiktok = getTikTokObject(username)
         status = downloadTikTok(name, tiktok, cwd, sort)
+        i = 0
         if (status == 'Failed!'):
             while (status == 'Failed!'):
-                print ('Trying again, again')
-                status = downloadTikTok(name, tiktok, cwd, sort)
+                if (i != 10):
+                    print ('Trying again, again')
+                    status = downloadTikTok(name, tiktok, cwd, sort)
+                    i += 1
+                else:
+                    status = 'Skip'
         print ('')
         uploadTikTok(name, username, delete, file, sort)
     elif (args.liked == True): ## Download liked
