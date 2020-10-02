@@ -10,7 +10,7 @@ import time
 import shutil
 
 def getVersion():
-    return '2020.09.29.2'
+    return '2020.10.02'
 
 def getUsernameVideos(username, limit):
     api = TikTokApi()
@@ -103,6 +103,11 @@ def uploadTikTok(username, tiktok, deletionStatus, file):
     regexD = re.compile('[0-9]{9}')
     if (os.path.isdir(tiktok) and (regex.match(str(tiktok)) or (regexA.match(str(tiktok))) or (regexB.match(str(tiktok))) or (regexC.match(str(tiktok))) or (regexD.match(str(tiktok))))):
         item = get_item('tiktok-' + tiktok)
+        if (username ==  None):
+            if (file != None):
+                file.write(str(tiktok))
+                file.write('\n')
+            return None
         item.upload('./' + tiktok + '/', verbose=True, checksum=True, delete=deletionStatus, metadata=dict(collection='opensource_media', subject='tiktok', creator=username, title='TikTok Video by ' + username, originalurl='https://www.tiktok.com/@' + username + '/video/' + tiktok, scanner='TikUp ' + getVersion()), retries=9001, retries_sleep=60)
         if (deletionStatus == True):
             os.rmdir(tiktok)
@@ -132,12 +137,18 @@ def downloadTikToks(username, tiktoks, file, downloadType):
             print (tiktok + " has already been archived.")
         else:
             tiktokObj = getTikTokObject(tiktok)
-            downloadTikTok(getUsername(tiktok), getTikTokObject(tiktok), cwd, 1)
+            username = getUsername(tiktok)
+            if (username == None):
+                print (tiktok + ' has been deleted or is private')
+                ids.append(tiktok)
+                break
+            downloadTikTok(username, tiktokObj, cwd, 1)
             i = 1
             while (os.path.exists(tiktok + '/' + tiktok + '.mp4') == False):
                 tiktokObj = getTikTokObject(tiktok)
+                username = getUsername(tiktok)
                 time.sleep(1)
-                downloadTikTok(getUsername(tiktok), tiktokObj, cwd, i)
+                downloadTikTok(username, tiktokObj, cwd, i)
                 i += 1
             print (tiktok + ' has been downloaded')
             ids.append(tiktok)
@@ -159,8 +170,7 @@ def getUsername(tiktokId):
     try:
         return thing['itemInfo']['itemStruct']['author']['uniqueId']
     except:
-        print (thing)
-        sys.exit()
+        return None
 
 def getTikTokObject(tiktokId):
     api = TikTokApi()
