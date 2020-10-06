@@ -10,7 +10,7 @@ import time
 import shutil
 
 def getVersion():
-    return '2020.10.02'
+    return '2020.10.06'
 
 def getUsernameVideos(username, limit):
     api = TikTokApi()
@@ -19,6 +19,7 @@ def getUsernameVideos(username, limit):
     else:
         count = 9999
     tiktoks = api.byUsername(username, count=count)
+    print (tiktoks)
     return tiktoks
 
 def getHashtagVideos(hashtag, limit):
@@ -141,17 +142,17 @@ def downloadTikToks(username, tiktoks, file, downloadType):
             if (username == None):
                 print (tiktok + ' has been deleted or is private')
                 ids.append(tiktok)
-                break
-            downloadTikTok(username, tiktokObj, cwd, 1)
-            i = 1
-            while (os.path.exists(tiktok + '/' + tiktok + '.mp4') == False):
-                tiktokObj = getTikTokObject(tiktok)
-                username = getUsername(tiktok)
-                time.sleep(1)
-                downloadTikTok(username, tiktokObj, cwd, i)
-                i += 1
-            print (tiktok + ' has been downloaded')
-            ids.append(tiktok)
+            else:
+                downloadTikTok(username, tiktokObj, cwd, 1)
+                i = 1
+                while (os.path.exists(tiktok + '/' + tiktok + '.mp4') == False):
+                    tiktokObj = getTikTokObject(tiktok)
+                    username = getUsername(tiktok)
+                    time.sleep(1)
+                    downloadTikTok(username, tiktokObj, cwd, i)
+                    i += 1
+                print (tiktok + ' has been downloaded')
+                ids.append(tiktok)
     return ids
 
 def uploadTikToks(tiktoks, file, delete):
