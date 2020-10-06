@@ -10,7 +10,7 @@ import time
 import shutil
 
 def getVersion():
-    return '2020.10.06'
+    return '2020.10.06.1'
 
 def getUsernameVideos(username, limit):
     api = TikTokApi()
@@ -19,7 +19,6 @@ def getUsernameVideos(username, limit):
     else:
         count = 9999
     tiktoks = api.byUsername(username, count=count)
-    print (tiktoks)
     return tiktoks
 
 def getHashtagVideos(hashtag, limit):
