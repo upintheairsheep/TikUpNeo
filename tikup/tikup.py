@@ -12,7 +12,7 @@ from .argparser import parse_args
 
 
 def getVersion():
-    return '2020.10.06.1'
+    return '2020.10.21'
 
 
 def getUsernameVideos(username, limit):
