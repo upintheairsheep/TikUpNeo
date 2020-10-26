@@ -12,7 +12,7 @@ from .argparser import parse_args
 
 
 def getVersion():
-    return '2020.10.21'
+    return '2020.10.26'
 
 
 def getUsernameVideos(username, limit):
@@ -83,7 +83,8 @@ def downloadTikTok(username, tiktok, cwd, varTry):
         mp4 = open(tiktokID + '.mp4', "r", encoding="latin-1")
         # For some reason, ytdl sometimes downloads the HTML page instead of the video
         # this removes the HTML
-        if str(mp4.read())[:15] == '<!DOCTYPE html>':
+        check = str(mp4.read())[:15]
+        if (check == '<!DOCTYPE html>') or (check[:6] == '<HTML>'):
             mp4.close()
             os.remove(tiktokID + '.mp4')
         else:
