@@ -3,6 +3,7 @@ import re
 import shutil
 import sys
 import time
+import random
 
 import youtube_dl
 from internetarchive import get_item, upload
@@ -12,7 +13,7 @@ from .argparser import parse_args
 
 
 def getVersion():
-    return '2020.10.26'
+    return '2020.10.28'
 
 
 def getUsernameVideos(username, limit):
@@ -45,7 +46,7 @@ def getLikedVideos(username, limit):
     return tiktoks
 
 
-def downloadTikTok(username, tiktok, cwd, varTry):
+def downloadTikTok(username, tiktok, cwd, varTry, did):
     try:
         tiktokID = tiktok['id']
     except:
@@ -69,14 +70,14 @@ def downloadTikTok(username, tiktok, cwd, varTry):
     if not os.path.exists(tiktokID):
         os.mkdir(tiktokID)
     os.chdir(tiktokID)
-    if varTry % 5 != 0:
+    if varTry % 3 != 0:
         with youtube_dl.YoutubeDL(ydl_opts) as ydl:
             # ydl.download([tiktok['itemInfo']['itemStruct']['video']['downloadAddr']])
             ydl.download(['https://www.tiktok.com/@' + username + '/video/' + tiktokID])
     else:
         api = TikTokApi()
         mp4 = open(tiktokID + '.mp4', "wb")
-        mp4.write(api.get_Video_By_DownloadURL(tiktok['itemInfo']['itemStruct']['video']['downloadAddr']))
+        mp4.write(api.get_Video_By_DownloadURL(tiktok['itemInfo']['itemStruct']['video']['downloadAddr'], custom_did=did))
         mp4.close()
         shutil.rmtree('tmp')
     try:
@@ -150,7 +151,7 @@ def uploadTikTok(username, tiktok, deletionStatus, file):
                 file.write('\n')
 
 
-def downloadTikToks(username, tiktoks, file, downloadType):
+def downloadTikToks(username, tiktoks, file, downloadType, did):
     cwd = os.getcwd()
     try:
         lines = file.readlines()
@@ -168,19 +169,19 @@ def downloadTikToks(username, tiktoks, file, downloadType):
         if file is not None and doesIdExist(lines, tiktok):
             print(tiktok + " has already been archived.")
         else:
-            tiktokObj = getTikTokObject(tiktok)
+            tiktokObj = getTikTokObject(tiktok, did)
             username = getUsername(tiktok)
             if username is None:
                 print(tiktok + ' has been deleted or is private')
                 ids.append(tiktok)
             else:
-                downloadTikTok(username, tiktokObj, cwd, 1)
+                downloadTikTok(username, tiktokObj, cwd, 1, did)
                 i = 1
                 while not os.path.exists(tiktok + '/' + tiktok + '.mp4'):
-                    tiktokObj = getTikTokObject(tiktok)
+                    tiktokObj = getTikTokObject(tiktok, did)
                     username = getUsername(tiktok)
                     time.sleep(1)
-                    downloadTikTok(username, tiktokObj, cwd, i)
+                    downloadTikTok(username, tiktokObj, cwd, i, did)
                     i += 1
                 print(tiktok + ' has been downloaded')
                 ids.append(tiktok)
@@ -205,9 +206,9 @@ def getUsername(tiktokId):
         return None
 
 
-def getTikTokObject(tiktokId):
+def getTikTokObject(tiktokId, did):
     api = TikTokApi()
-    thing = api.getTikTokById(tiktokId)
+    thing = api.getTikTokById(tiktokId, custom_did=did)
     return thing
 
 
@@ -233,6 +234,7 @@ def main():
             file = open('archive.txt', 'r+')
     else:
         file = None
+    did = str(random.randint(10000, 999999999))
     if args.hashtag:  # Download hashtag
         downloadType = 'hashtag'
         tiktoks = getHashtagVideos(username, limit)
@@ -245,7 +247,7 @@ def main():
     else:  # Download username
         downloadType = 'username'
         tiktoks = getUsernameVideos(username, limit)
-    tiktoks = downloadTikToks(username, tiktoks, file, downloadType)
+    tiktoks = downloadTikToks(username, tiktoks, file, downloadType, did)
     uploadTikToks(tiktoks, file, delete)
 
     try:
