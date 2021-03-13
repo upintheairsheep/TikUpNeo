@@ -15,7 +15,7 @@ from .argparser import parse_args
 api = TikTokApi()
 
 def getVersion():
-    return '2020.12.26'
+    return '2021.03.13'
 
 
 def getUsernameVideos(username, limit):
