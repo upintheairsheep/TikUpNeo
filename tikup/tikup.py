@@ -14,8 +14,9 @@ from .argparser import parse_args
 
 api = TikTokApi()
 
+
 def getVersion():
-    return '2021.03.13'
+    return '2021.07.25'
 
 
 def getUsernameVideos(username, limit):
@@ -68,37 +69,39 @@ def downloadTikTok(username, tiktok, cwd, varTry, did):
     if not os.path.exists(tiktokID):
         os.mkdir(tiktokID)
     os.chdir(tiktokID)
-    if varTry % 3 != 0:
-        with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-            # ydl.download([tiktok['itemInfo']['itemStruct']['video']['downloadAddr']])
-            ydl.download(['https://www.tiktok.com/@' + username + '/video/' + tiktokID])
-    else:
-        mp4 = open(tiktokID + '.mp4', "wb")
-        mp4.write(api.get_Video_By_DownloadURL(tiktok['itemInfo']['itemStruct']['video']['downloadAddr'], custom_did=did))
-        mp4.close()
-        #shutil.rmtree('tmp')
-    try:
-        mp4 = open(tiktokID + '.mp4', "r", encoding="latin-1")
-        # For some reason, ytdl sometimes downloads the HTML page instead of the video
-        # this removes the HTML
-        check = str(mp4.read())[:15]
-        if (check == '<!DOCTYPE html>') or (check[:6] == '<HTML>'):
-            mp4.close()
-            os.remove(tiktokID + '.mp4')
+    filesExist = (os.path.exists(tiktokID + '.description') and os.path.getsize(tiktokID + '.description') > 0) and (os.path.exists(tiktokID + '.info.json') and os.path.getsize(tiktokID + '.info.json') > 0) and (os.path.exists(tiktokID + '.jpg') and os.path.getsize(tiktokID + '.jpg') > 0) and (os.path.exists(tiktokID + '.mp4') and os.path.getsize(tiktokID + '.mp4') > 0) and (os.path.exists('tiktok_info.json') and os.path.getsize('tiktok_info.json') > 0)
+    if not filesExist:
+        if varTry % 3 != 0:
+            with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+                # ydl.download([tiktok['itemInfo']['itemStruct']['video']['downloadAddr']])
+                ydl.download(['https://www.tiktok.com/@' + username + '/video/' + tiktokID])
         else:
+            mp4 = open(tiktokID + '.mp4', "wb")
+            mp4.write(api.get_Video_By_DownloadURL(tiktok['itemInfo']['itemStruct']['video']['downloadAddr'], custom_did=did))
             mp4.close()
-    except FileNotFoundError:
-        pass
-    x = os.listdir()
-    for i in x:
-        if i.endswith('.unknown_video'):
-            base = os.path.splitext(i)[0]
-            if os.path.exists(base + '.mp4'):
-                os.remove(base + '.mp4')
-            os.rename(i, base + '.mp4')
-    json = open("tiktok_info.json", "w", encoding="utf-8")
-    json.write(str(tiktok))
-    json.close()
+            #shutil.rmtree('tmp')
+        try:
+            mp4 = open(tiktokID + '.mp4', "r", encoding="latin-1")
+            # For some reason, ytdl sometimes downloads the HTML page instead of the video
+            # this removes the HTML
+            check = str(mp4.read())[:15]
+            if (check == '<!DOCTYPE html>') or (check[:6] == '<HTML>'):
+                mp4.close()
+                os.remove(tiktokID + '.mp4')
+            else:
+                mp4.close()
+        except FileNotFoundError:
+            pass
+        x = os.listdir()
+        for i in x:
+            if i.endswith('.unknown_video'):
+                base = os.path.splitext(i)[0]
+                if os.path.exists(base + '.mp4'):
+                    os.remove(base + '.mp4')
+                os.rename(i, base + '.mp4')
+        json = open("tiktok_info.json", "w", encoding="utf-8")
+        json.write(str(tiktok))
+        json.close()
     os.chdir(cwd)
 
 
@@ -208,16 +211,24 @@ def getTikTokObject(tiktokId, did):
 
 
 def main():
-    os.chdir(os.path.expanduser('~'))
-    if not os.path.exists('./.tikup'):
-        os.mkdir('./.tikup')
-    os.chdir('./.tikup')
-
     args = parse_args()
     username = args.user
     delete = args.no_delete
     limit = args.limit
     archive = args.use_download_archive
+    folder = args.folder
+    global upload
+    upload = args.no_upload
+
+    if folder == None:
+        os.chdir(os.path.expanduser('~'))
+        if not os.path.exists('./.tikup'):
+            os.mkdir('./.tikup')
+        os.chdir('./.tikup')
+    else:
+        if not os.path.exists(folder):
+            os.mkdir(folder)
+        os.chdir(folder)
 
     downloadType = ''
     if archive:
@@ -243,7 +254,8 @@ def main():
         downloadType = 'username'
         tiktoks = getUsernameVideos(username, limit)
     tiktoks = downloadTikToks(username, tiktoks, file, downloadType, did)
-    uploadTikToks(tiktoks, file, delete)
+    if upload == True:
+        uploadTikToks(tiktoks, file, delete)
 
     try:
         file.close()
