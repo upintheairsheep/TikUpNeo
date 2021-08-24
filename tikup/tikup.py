@@ -16,7 +16,7 @@ api = TikTokApi()
 
 
 def getVersion():
-    return '2021.07.25'
+    return '2021.08.24'
 
 
 def getUsernameVideos(username, limit):
