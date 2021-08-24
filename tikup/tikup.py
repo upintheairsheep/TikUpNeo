@@ -258,6 +258,8 @@ def main():
         uploadTikToks(tiktoks, file, delete)
 
     try:
+        for tiktok_id in tiktoks:
+            file.write(tiktok_id + '\n')
         file.close()
     except:
         pass
