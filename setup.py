@@ -20,13 +20,13 @@ with open('README.md', 'r') as f:
 requirements = read_multiline_as_list("requirements.txt")
 
 setup(
-    name='tikup',
+    name='tikupneo',
     version=getVersion(),
     description='An auto downloader and uploader for TikTok videos.',
     long_description=long_description,
     long_description_content_type='text/markdown',
-    url='https://github.com/Coloradohusky/TikUp',
-    author='Coloradohusky',
+    url='https://github.com/upintheairsheep/TikUpNeo',
+    author='upintheairsheep',
     packages=find_packages(),
     entry_points={
         'console_scripts': [
