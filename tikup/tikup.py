@@ -136,7 +136,7 @@ def uploadTikTok(username, tiktok, deletionStatus, file):
                     creator=username,
                     title='TikTok Video by ' + username,
                     originalurl='https://www.tiktok.com/@' + username + '/video/' + tiktok,
-                    scanner='TikUp ' + getVersion(),
+                    scanner='TikUp Neo ' + getVersion(),
                 ),
                 retries=9001,
                 retries_sleep=60,
