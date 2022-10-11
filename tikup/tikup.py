@@ -5,7 +5,7 @@ import sys
 import time
 import random
 
-import youtube_dl
+from yt_dlp import YoutubeDL
 from internetarchive import get_item, upload
 from TikTokApi import TikTokApi
 #Make sure to change to 'from .argparser import parse_args' when uploading
@@ -72,7 +72,7 @@ def downloadTikTok(username, tiktok, cwd, varTry, did):
     filesExist = (os.path.exists(tiktokID + '.description') and os.path.getsize(tiktokID + '.description') > 0) and (os.path.exists(tiktokID + '.info.json') and os.path.getsize(tiktokID + '.info.json') > 0) and (os.path.exists(tiktokID + '.jpg') and os.path.getsize(tiktokID + '.jpg') > 0) and (os.path.exists(tiktokID + '.mp4') and os.path.getsize(tiktokID + '.mp4') > 0) and (os.path.exists('tiktok_info.json') and os.path.getsize('tiktok_info.json') > 0)
     if not filesExist:
         if varTry % 3 != 0:
-            with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+            with yt_dlp.YoutubeDL(ydl_opts) as ydl:
                 # ydl.download([tiktok['itemInfo']['itemStruct']['video']['downloadAddr']])
                 ydl.download(['https://www.tiktok.com/@' + username + '/video/' + tiktokID])
         else:
@@ -136,7 +136,7 @@ def uploadTikTok(username, tiktok, deletionStatus, file):
                     creator=username,
                     title='TikTok Video by ' + username,
                     originalurl='https://www.tiktok.com/@' + username + '/video/' + tiktok,
-                    scanner='TikUp ' + getVersion(),
+                    scanner='TikUp Neo ' + getVersion(),
                 ),
                 retries=9001,
                 retries_sleep=60,
