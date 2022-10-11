@@ -5,7 +5,7 @@ import sys
 import time
 import random
 
-import yt_dlp
+from yt_dlp import YoutubeDL
 from internetarchive import get_item, upload
 from TikTokApi import TikTokApi
 #Make sure to change to 'from .argparser import parse_args' when uploading
