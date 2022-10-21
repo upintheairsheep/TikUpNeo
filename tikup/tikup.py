@@ -220,7 +220,8 @@ def getUsername(tiktokId):
 
 
 def getTikTokObject(tiktokId, did):
-    thing = api.get_tiktok_by_id(tiktokId, custom_did=did)
+    
+    thing = api.video(tiktokId=id, custom_did=did)
     return thing
 
 
