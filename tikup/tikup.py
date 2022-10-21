@@ -145,7 +145,7 @@ def uploadTikTok(username, tiktok, deletionStatus, file):
                 checksum=True,
                 delete=deletionStatus,
                 metadata=dict(
-                    collection='opensource_media',
+                    collection='opensource_movies',
                     subject='tiktok',
                     creator=username,
                     title='TikTok Video by ' + username,
@@ -221,7 +221,7 @@ def getUsername(tiktokId):
 
 def getTikTokObject(tiktokId, did):
     
-    thing = api.video(tiktokId=id, custom_did=did)
+    thing = api.video(id=tiktokId, custom_did=did)
     return thing
 
 
