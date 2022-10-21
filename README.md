@@ -51,3 +51,6 @@ Then run `ia configure` and log in.
 - Changed downloader from the now inactive youtube-dl to yt-dlp, which is more active, and supports watermark-free downloads
 - Changed tiktok-info json from info to info_full.
 - Added IA upload and Changes section
+
+**Credits**
+Original TikUp by Coloradohusky. Dear Coloradohusky, I hate you for deleting the original TikUp and InstaUp, then blocking me when I ask why.
