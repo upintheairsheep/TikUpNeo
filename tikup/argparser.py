@@ -33,6 +33,9 @@ def parse_args():
      parser.add_argument(
         "--comments", action="store_true", help="download all comments of this TikTok. Warning: may slow down archival by a lot if videos have lots of comments."
     )
+      parser.add_argument(
+        "--meta", action="store_true", help="upload metadata of list."
+    )
     parser.add_argument(
         "--no-upload", action="store_false", help="turn off uploading to the Internet Archive"
     )
