@@ -53,4 +53,5 @@ Then run `ia configure` and log in.
 - Added IA upload and Changes section
 
 **Credits**
+
 Original TikUp by Coloradohusky. Dear Coloradohusky, I hate you for deleting the original TikUp and InstaUp, then blocking me when I ask why.
