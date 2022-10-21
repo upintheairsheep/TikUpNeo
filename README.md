@@ -36,3 +36,11 @@ optional arguments:
   --folder FOLDER       set download destination (default: ~/.tikup)
   --no-upload           turn off uploading to the Internet Archive
 ```
+
+**Internet Archive upload**
+
+To interact with the Internet Archive, you will first need to [create an IA account](https://archive.org/account/login.createaccount.php).
+
+Confirm your account and note down your email address and password.
+
+Then run `ia configure` and log in.
