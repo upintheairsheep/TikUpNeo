@@ -1,9 +1,10 @@
-TikUp
+TikUp Neo
 =====
 
-Note: TikTok-Api is currently broken, meaning that that TikUpNeo will not work until the issues get fixed. tiktok-scraper also broke at the same time.
+An updated auto downloader and uploader for TikTok videos.
 
-An auto downloader and uploader for TikTok videos.
+
+Note: TikTok-Api is currently broken, meaning that that TikUpNeo will not work until the issues get fixed. tiktok-scraper also broke at the same time.
 
 **Requirements**  
 [TikTok-Api](https://github.com/davidteather/TikTok-Api), [internetarchive](https://archive.org/services/docs/api/internetarchive/index.html), [yt-dlp](https://github.com/yt-dlp/yt-dlp), and [playwright](https://github.com/Microsoft/playwright-python) on Python 3.
