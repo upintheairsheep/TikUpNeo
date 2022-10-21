@@ -1,4 +1,4 @@
 internetarchive>=2.0.3
-TikTokApi>=3.9.9
-youtube-dl>=2021.6.6
+TikTokApi>=5.1.0
+yt-dlp>=2022.10.04
 playwright>=1.9.2
