@@ -1,6 +1,8 @@
 TikUp
 =====
 
+Note: TikTok-Api is currently broken, meaning that that TikUpNeo will not work until the issues get fixed. tiktok-scraper also broke at the same time.
+
 An auto downloader and uploader for TikTok videos.
 
 **Requirements**  
