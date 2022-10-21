@@ -55,3 +55,5 @@ Then run `ia configure` and log in.
 **Credits**
 
 Original TikUp by Coloradohusky. Dear Coloradohusky, I hate you for deleting the original TikUp and InstaUp, then blocking me when I ask why.
+
+Special thanks to osmaelo for forking TikUp's latest version before it's death
