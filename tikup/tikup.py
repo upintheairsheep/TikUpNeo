@@ -79,7 +79,7 @@ def downloadTikTok(username, tiktok, cwd, varTry, did):
         'quiet': True,
         'no_warnings': True,
         'restrictfilenames': True,
-        
+        'nooverwrites': True,
         'outtmpl': tiktokID + '.mp4',
     }
     if not os.path.exists(tiktokID):
