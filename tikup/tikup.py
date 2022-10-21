@@ -115,8 +115,9 @@ def downloadTikTok(username, tiktok, cwd, varTry, did):
                 if os.path.exists(base + '.mp4'):
                     os.remove(base + '.mp4')
                 os.rename(i, base + '.mp4')
+        tiktokinfo = api.video(id='tiktokID').info_full()
         json = open("tiktok_info.json", "w", encoding="utf-8")
-        json.write(str(tiktok))
+        json.write(str(tiktokinfo))
         json.close()
     os.chdir(cwd)
 
