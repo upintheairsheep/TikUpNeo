@@ -44,8 +44,10 @@ To interact with the Internet Archive, you will first need to [create an IA acco
 Confirm your account and note down your email address and password.
 
 Then run `ia configure` and log in.
-```
+
 **Changes from TikTok-Api**
+```
+
 *Updated TikTok-Api functions to 4.0+ from the dated 3.1.4 version.
 *Changed downloader from the now inactive youtube-dl to yt-dlp, which is more active, and supports watermark-free downloads
 *Changed tiktok-info json from info to info_full.
