@@ -38,9 +38,9 @@ def getHashtagVideos(hashtag, limit):
     else:
         count = 9999
     hashtag = api.hashtag(name=hashtag, count=limit)
-    user.as_dict # -> dict of the user_object
+    hashtag.as_dict # -> dict of the user_object
     tiktok_list = []
-    for video in user.videos():
+    for video in hashtag.videos():
         video.as_dict 
         tiktok_list.append((value[0], key))
     return tiktok_list
@@ -50,10 +50,10 @@ def getSoundVideos(sound, limit):
         count = int(limit)
     else:
         count = 9999
-    hashtag = api.hashtag(name=hashtag, count=limit)
-    user.as_dict # -> dict of the user_object
+    sound = api.sound(name=sound, count=limit)
+    sound.as_dict # -> dict of the user_object
     tiktok_list = []
-    for video in user.videos():
+    for video in sound.videos():
         video.as_dict 
         tiktok_list.append((value[0], key))
     return tiktok_list
