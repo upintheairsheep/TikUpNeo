@@ -24,9 +24,13 @@ def getUsernameVideos(username, limit):
         count = int(limit)
     else:
         count = 9999
-    tiktoks = api.by_username(username, count=count)
-    return tiktoks
-
+    user = api.user(username, count=count)
+    user.as_dict # -> dict of the user_object
+    tiktok_list = []
+    for video in user.videos():
+        video.as_dict 
+        tiktok_list.append((value[0], key))
+    return tiktok_list
 
 def getHashtagVideos(hashtag, limit):
     if limit is not None:
