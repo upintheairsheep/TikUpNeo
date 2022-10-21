@@ -24,7 +24,7 @@ def getUsernameVideos(username, limit):
         count = int(limit)
     else:
         count = 9999
-    user = api.user(username, count=count)
+    user = api.user(username, count=limit)
     user.as_dict # -> dict of the user_object
     tiktok_list = []
     for video in user.videos():
@@ -37,8 +37,13 @@ def getHashtagVideos(hashtag, limit):
         count = int(limit)
     else:
         count = 9999
-    tiktoks = api.by_hashtag(hashtag, count=count)
-    return tiktoks
+    hashtag = api.hashtag(name=hashtag, count=limit)
+    user.as_dict # -> dict of the user_object
+    tiktok_list = []
+    for video in user.videos():
+        video.as_dict 
+        tiktok_list.append((value[0], key))
+    return tiktok_list
 
 
 def getLikedVideos(username, limit):
@@ -46,8 +51,13 @@ def getLikedVideos(username, limit):
         count = int(limit)
     else:
         count = 9999
-    tiktoks = api.user_liked_by_username(username, count=count)
-    return tiktoks
+    user = api.user(username, count=limit)
+    user.as_dict # -> dict of the user_object
+    tiktok_list = []
+    for liked_video in user.videos():
+        video.as_dict 
+        tiktok_list.append((value[0], key))
+    return tiktok_list
 
 def downloadTikTok(username, tiktok, cwd, varTry, did):
     try:
