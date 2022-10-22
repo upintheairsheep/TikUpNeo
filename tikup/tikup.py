@@ -106,7 +106,9 @@ def downloadTikTok(username, tiktok, cwd, varTry, did):
                   and (os.path.exists(tiktokID + '.mp4') 
                   and os.path.getsize(tiktokID + '.mp4') > 0) 
                   and (os.path.exists('tiktok_info.json') 
-                  and os.path.getsize('tiktok_info.json') > 0)
+                  and os.path.getsize('tiktok_info.json') > 0) 
+                  and (os.path.exists('comments.json') 
+                  and os.path.getsize('comments.json') > 0)
     if not filesExist:
         if varTry % 3 != 0:
             with YoutubeDL(ydl_opts) as ydl:
