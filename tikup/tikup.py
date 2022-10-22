@@ -142,6 +142,10 @@ def downloadTikTok(username, tiktok, cwd, varTry, did):
         json = open("tiktok_info.json", "w", encoding="utf-8")
         json.write(str(tiktokinfo))
         json.close()
+        if comments == True:
+          json = open("comments.json", "w", encoding="utf-8")
+          for comment in video.comments:
+                json.write(comment.as_dict)
     os.chdir(cwd)
 
 
