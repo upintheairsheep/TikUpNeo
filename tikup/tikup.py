@@ -143,7 +143,7 @@ def downloadTikTok(username, tiktok, cwd, varTry, did):
         json.write(str(tiktokinfo))
         commentcount = (tiktokinfo['aweme_detail']['statistics']['comment_count'])
         json.close()
-        if comments == True:
+        if (comments == True or commentcount =< 1000):
           print("Downloading " + commentcount + "comments")
           json = open("comments.json", "w", encoding="utf-8")
           for comment in video.comments:
