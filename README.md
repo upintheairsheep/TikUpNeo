@@ -58,6 +58,8 @@ Then run `ia configure` and log in.
 
 - Test TikUp Neo when TikTok-Api gets fixed, and fix bugs
 - Extract videos from search
+  - Video search
+  - User search
 - Add more Internet Archive metadata
   - Description
   - Date
