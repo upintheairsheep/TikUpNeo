@@ -57,6 +57,7 @@ Then run `ia configure` and log in.
 **Todo**
 
 - Test TikUp Neo when TikTok-Api gets fixed, and fix bugs
+- Change Download and Upload order from "Download > Download > Upload > Upload" to "Download > Upload > Download > Upload". This would be useful for people with low storage and people using time limited servers.
 - Extract videos from search
   - Video search
   - User search
