@@ -97,7 +97,16 @@ def downloadTikTok(username, tiktok, cwd, varTry, did):
     if not os.path.exists(tiktokID):
         os.mkdir(tiktokID)
     os.chdir(tiktokID)
-    filesExist = (os.path.exists(tiktokID + '.description') and os.path.getsize(tiktokID + '.description') > 0) and (os.path.exists(tiktokID + '.info.json') and os.path.getsize(tiktokID + '.info.json') > 0) and (os.path.exists(tiktokID + '.jpg') and os.path.getsize(tiktokID + '.jpg') > 0) and (os.path.exists(tiktokID + '.mp4') and os.path.getsize(tiktokID + '.mp4') > 0) and (os.path.exists('tiktok_info.json') and os.path.getsize('tiktok_info.json') > 0)
+    filesExist = (os.path.exists(tiktokID + '.description') 
+                  and os.path.getsize(tiktokID + '.description') > 0) 
+                  and (os.path.exists(tiktokID + '.info.json') 
+                  and os.path.getsize(tiktokID + '.info.json') > 0) 
+                  and (os.path.exists(tiktokID + '.jpg')                
+                  and os.path.getsize(tiktokID + '.jpg') > 0) 
+                  and (os.path.exists(tiktokID + '.mp4') 
+                  and os.path.getsize(tiktokID + '.mp4') > 0) 
+                  and (os.path.exists('tiktok_info.json') 
+                  and os.path.getsize('tiktok_info.json') > 0)
     if not filesExist:
         if varTry % 3 != 0:
             with YoutubeDL(ydl_opts) as ydl:
@@ -248,6 +257,7 @@ def main():
     archive = args.use_download_archive
     folder = args.folder
     sound = args.sound
+    comments = args.comments 
     global upload
     upload = args.no_upload
 
