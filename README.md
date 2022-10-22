@@ -55,28 +55,34 @@ Then run `ia configure` and log in.
 - Added comments extraction support
 
 **Todo**
+
 - Test TikUp Neo when TikTok-Api gets fixed, and fix bugs
 - Extract videos from search
 - Add more Internet Archive metadata
- - Description
- - Date
- - Tags
-- Create Metadata and List posts
- - User
-  - Profile Picture
- - Sound
-  - Sound file
-  - Sound cover art
-  - Sound beat graph
- - Hashtag
+-- Description
+-- Date
+-- Tags
+- Create Metadata and List posts, with all raw metadata from tiktok along with a csv of TikToks insside them.
+-- User
+--- Profile Picture
+--- Liked videos list
+-- Sound
+--- Sound file
+--- Sound cover art
+--- Sound beat graph
+-- Hashtag
+-- Search(?)
+
 **To be implemented by TikTok-Api**
+
 - Effects
 - Locations
 - Playlists
 - Photo Posts
+
 **To be implemented by yt-dlp**
+
 - HD video option
-- 
 **Credits**
 
 Original TikUp by Coloradohusky. Dear Coloradohusky, I hate you for deleting the original TikUp and InstaUp, then blocking me when I ask why.
