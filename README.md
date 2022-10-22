@@ -73,16 +73,17 @@ Then run `ia configure` and log in.
   - Hashtag
   - Search(?)
 
-**To be implemented by TikTok-Api**
+***To be implemented by TikTok-Api***
 
 - Effects
 - Locations
 - Playlists
 - Photo Posts
 
-**To be implemented by yt-dlp**
+***To be implemented by yt-dlp***
 
 - HD video option
+
 **Credits**
 
 Original TikUp by Coloradohusky. Dear Coloradohusky, I hate you for deleting the original TikUp and InstaUp, then blocking me when I ask why.
