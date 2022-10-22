@@ -52,7 +52,31 @@ Then run `ia configure` and log in.
 - Changed downloader from the now inactive youtube-dl to yt-dlp, which is more active, and supports watermark-free downloads
 - Changed tiktok-info json from info to info_full.
 - Added IA upload and Changes section
+- Added comments extraction support
 
+**Todo**
+- Test TikUp Neo when TikTok-Api gets fixed, and fix bugs
+- Extract videos from search
+- Add more Internet Archive metadata
+ - Description
+ - Date
+ - Tags
+- Create Metadata and List posts
+ - User
+  - Profile Picture
+ - Sound
+  - Sound file
+  - Sound cover art
+  - Sound beat graph
+ - Hashtag
+**To be implemented by TikTok-Api**
+- Effects
+- Locations
+- Playlists
+- Photo Posts
+**To be implemented by yt-dlp**
+- HD video option
+- 
 **Credits**
 
 Original TikUp by Coloradohusky. Dear Coloradohusky, I hate you for deleting the original TikUp and InstaUp, then blocking me when I ask why.
