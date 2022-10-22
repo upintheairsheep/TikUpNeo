@@ -26,11 +26,11 @@ def getUsernameVideos(username, limit):
         count = 9999
     user = api.user(username, count=limit)
     user.as_dict # -> dict of the user_object
-    tiktok_list = []
+    tiktoks = []
     for video in user.videos():
         video.as_dict 
-        tiktok_list.append((value[0], key))
-    return tiktok_list
+        tiktoks.append((value[0], key))
+    return tiktoks
 
 def getHashtagVideos(hashtag, limit):
     if limit is not None:
@@ -39,11 +39,11 @@ def getHashtagVideos(hashtag, limit):
         count = 9999
     hashtag = api.hashtag(name=hashtag, count=limit)
     hashtag.as_dict # -> dict of the user_object
-    tiktok_list = []
+    tiktoks = []
     for video in hashtag.videos():
         video.as_dict 
-        tiktok_list.append((value[0], key))
-    return tiktok_list
+        tiktoks.append((value[0], key))
+    return tiktoks
 
 def getSoundVideos(sound, limit):
     if limit is not None:
@@ -52,11 +52,11 @@ def getSoundVideos(sound, limit):
         count = 9999
     sound = api.sound(name=sound, count=limit)
     sound.as_dict # -> dict of the user_object
-    tiktok_list = []
+    tiktoks = []
     for video in sound.videos():
         video.as_dict 
-        tiktok_list.append((value[0], key))
-    return tiktok_list
+        tiktoks.append((value[0], key))
+    return tiktoks
 
 def getLikedVideos(username, limit):
     if limit is not None:
@@ -65,11 +65,11 @@ def getLikedVideos(username, limit):
         count = 9999
     user = api.user(username, count=limit)
     user.as_dict # -> dict of the user_object
-    tiktok_list = []
+    tiktoks = []
     for liked_video in user.videos():
         video.as_dict 
-        tiktok_list.append((value[0], key))
-    return tiktok_list
+        tiktoks.append((value[0], key))
+    return tiktoks
 
 def downloadTikTok(username, tiktok, cwd, varTry, did):
     try:
