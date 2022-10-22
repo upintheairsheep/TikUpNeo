@@ -141,12 +141,16 @@ def downloadTikTok(username, tiktok, cwd, varTry, did):
         tiktokinfo = api.video(id='tiktokID').info_full()
         json = open("tiktok_info.json", "w", encoding="utf-8")
         json.write(str(tiktokinfo))
+        commentcount = (tiktokinfo['aweme_detail']['statistics']['comment_count'])
         json.close()
         if comments == True:
-          print("Downloading Comments")
+          print("Downloading " + commentcount + "comments")
           json = open("comments.json", "w", encoding="utf-8")
           for comment in video.comments:
                 json.write(comment.as_dict)
+          json.close()
+          print("Comment downloading finished.")
+        
     os.chdir(cwd)
 
 
