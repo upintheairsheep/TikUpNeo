@@ -247,6 +247,7 @@ def main():
     limit = args.limit
     archive = args.use_download_archive
     folder = args.folder
+    sound = args.sound
     global upload
     upload = args.no_upload
 
@@ -280,6 +281,9 @@ def main():
     elif args.liked:  # Download liked
         downloadType = 'liked'
         tiktoks = getLikedVideos(username, limit)
+    elif args.sound:  # Download videos of a music track
+        downloadType = 'sound'
+        tiktoks = getSoundVideos(sound, limit)
     else:  # Download username
         downloadType = 'username'
         tiktoks = getUsernameVideos(username, limit)
