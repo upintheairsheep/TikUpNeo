@@ -10,7 +10,7 @@ from internetarchive import get_item, upload
 from TikTokApi import TikTokApi
 #Make sure to change to 'from .argparser import parse_args' when uploading
 from .argparser import parse_args
-
+# Project on hiatus until TikTok-Api, tiktok-scraper, or yt-dlp's tiktok scraping functionallity return to a working condition.
 
 api = TikTokApi()
 
